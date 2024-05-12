@@ -84,6 +84,28 @@ print(f'La efectividad con la data de prueba con el modelo RandomForest es de {e
 # prediccion = forest.predict([[25,356,75,1,1,0,0,1,0,0,8,180,7,4]])
 # print(resultado[prediccion[0]])
 
+#Crear función para diferentes modelos
+def models(X_train, y_train):
+  #Using GaussianNB
+  from sklearn.naive_bayes import GaussianNB
+  gauss = GaussianNB()
+  gauss.fit(X_train, y_train)
+
+  #Using DecisionTreeClassifier
+
+  from sklearn.tree import DecisionTreeClassifier
+  tree = DecisionTreeClassifier(criterion = 'entropy', random_state = 0)
+  tree.fit(X_train, y_train)
+
+
+  #imprimir la precisión del modelo en los datos de entrenamiento.
+  print("[1]Gaussian Naive Bayes Precisión:", gauss.score(X_train, y_train))
+  print("[2]Decision Tree Classifier Precisión:", tree.score(X_train, y_train))
+  print("[3]Random Forest Classifier Precisión:", forest.score(X_train, y_train))
+  return gauss, tree, forest
+
+model = models(X_train, y_train)
+
 # Creación de la aplicación Flask
 app = Flask(__name__)
 
