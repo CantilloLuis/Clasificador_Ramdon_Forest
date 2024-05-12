@@ -1,0 +1,138 @@
+from flask import Flask, request, jsonify, render_template
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+import matplotlib.pyplot as plt
+import matplotlib
+import seaborn as sns
+
+
+matplotlib.use('agg')  # Evitar la inicialización de Tkinter
+
+
+
+
+# Carga el dataset
+df = pd.read_excel(r"C:\Users\canti\Downloads\corazon.xlsx")
+
+
+def sano_enfermo(fila):
+  result = 'enfermo'
+  if int(fila['Heart Attack Risk']) == 0:
+    result = 'no enfermo'
+  return result
+
+df['estado'] = df.apply(sano_enfermo,axis=1)
+
+resultado = dict(zip(df['Heart Attack Risk'].unique(),df['estado'].unique()))
+print(resultado)
+
+# Metodo para generar graficos de barras
+def generate_bar_chart():
+  estado_counts = df['estado'].value_counts()
+  # Genera una paleta de colores con la cantidad de colores igual a la cantidad de barras
+  colors = sns.color_palette('husl', n_colors=len(estado_counts))
+  plt.bar(estado_counts.index, estado_counts.values,color=colors)
+  plt.xlabel('Estado')
+  plt.ylabel('Cantidad de personas')
+  plt.title('Distribución de estado')
+  plt.savefig('static/bar_chart.png')  # Guardar el gráfico como imagen
+  plt.close()
+  
+# Después de cargar tus datos y seleccionar las características relevantes, puedes calcular la matriz de correlación
+correlation_matrix = df[['Age', 'Cholesterol', 'Heart_Rate', 'Diabetes', 'Smoking', 'Obesity', 'Alcohol_Consumption', 'Previous_Heart_Problems', 'Medication_Use', 'Stress_Level', 'Triglycerides', 'Physical_Activity_Days_Per_Week', 'Sleep_Hours_Per_Day']].corr()
+
+# Metodo para generar graficos de mapa de calor
+def generate_bar_heatmap():
+  plt.figure(figsize=(10, 8))
+  sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f", annot_kws={"size": 10})
+  plt.title('Matriz de correlación')
+  plt.savefig('static/heatmap.png')  # Guardar el mapa de calor como imagen
+  plt.close()
+
+# Metodo para generar graficos de mapa de dispersion
+def generate_bar_dispersion():
+  sampled_data = df.sample(n=1000)  # Tomar una muestra aleatoria de 1000 puntos
+  plt.scatter(sampled_data['Age'], sampled_data['Heart_Rate'],s=5,alpha=0.5)
+  plt.xlabel('Age')
+  plt.ylabel('Cholesterol')
+  plt.title('Gráfico de Dispersión de Age vs Cholesterol')
+  plt.savefig('static/dispersion.png')  # Guardar el mapa de calor como imagen
+  plt.close()
+
+#Dividimos el conjunto de datos en: Conjunto de datos independiente (x)
+#Conjunto de datos dependiente (y)
+
+X = df[['Age','Cholesterol','Heart_Rate','Diabetes','Smoking','Obesity','Alcohol_Consumption','Previous_Heart_Problems','Medication_Use','Stress_Level','Triglycerides','Physical_Activity_Days_Per_Week','Sleep_Hours_Per_Day']]
+
+y = df['Heart Attack Risk']
+
+#Preparamos el data set para entrenamiento y prueba.
+#Dividimos el 80% para entrenamiento y 20% para pruebas
+
+X_train, X_test, y_train,y_test = train_test_split(X,y,random_state = 0,test_size = 0.20)
+
+# Entrenamiento del modelo
+forest = RandomForestClassifier(n_estimators = 10,criterion='gini')
+forest.fit(X_train,y_train)
+
+estimacion_prueba = forest.score(X_test,y_test)
+estimacion_entrenamiento = forest.score(X_train,y_train)
+print(f'La efectividad con la data de prueba con el modelo RandomForest es de {estimacion_prueba} y con la data de entranamiento es de {estimacion_entrenamiento}')
+
+
+# prediccion = forest.predict([[25,356,75,1,1,0,0,1,0,0,8,180,7,4]])
+# print(resultado[prediccion[0]])
+
+# Creación de la aplicación Flask
+app = Flask(__name__)
+
+app.static_folder = 'static'
+
+# Ruta principal para la página de inicio
+@app.route('/')
+def index():
+  return render_template('index.html')
+
+# Ruta para generar el grafico de barras
+@app.route('/generate_chart', methods=['POST'])
+def generate_chart():
+  generate_bar_chart()
+  return jsonify({'chart_generated': True})
+
+# Ruta para generar el grafico de mapa de calor
+@app.route('/generate_heatmap', methods=['POST'])
+def generate_heatmap():
+  generate_bar_heatmap()
+  return jsonify({'generate_heatmap': True})
+
+# Ruta para generar el grafico de dispersion
+@app.route('/generate_dispersion', methods=['POST'])
+def generate_dispersion():
+  generate_bar_dispersion()
+  return jsonify({'generate_dispersion': True})
+
+# Ruta para la predicción
+@app.route('/predict', methods=['POST'])
+def predict():
+    # Capturamos los datos enviados
+    data = request.get_json()
+    caracteristicas = data['caracteristicas']
+
+    # Convertir los síntomas en un DataFrame
+    caracteristicas_df = pd.DataFrame(caracteristicas, index=[0])
+
+    print(caracteristicas_df)
+
+    # Realizar la predicción
+    prediccion = forest.predict(caracteristicas_df)
+
+    # Devolver el resultado
+    return jsonify({
+      'prediction': resultado[prediccion[0]],
+      'estimacion_prueba': estimacion_prueba,
+      'estimacion_entrenamiento': estimacion_entrenamiento
+    })
+
+if __name__ == '__main__':
+    app.run(debug=True)

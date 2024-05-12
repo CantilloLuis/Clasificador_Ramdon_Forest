@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulario de Síntomas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body>
+    <div class="form-header">
+        <h1>Formulario de atributos</h1>
+    </div>
+    <br>
+    <div align="center">
+        <button id="generateBtn" style="display: inline-block; margin-right: 10px;" class="form-submit">Generar Gráfico
+            de
+            barras</button>
+        <div id="myModal" class="modal">
+            <span class="close">&times;</span>
+            <img class="modal-content" id="img01">
+        </div>
+        <button id="generateBtn2" style="display: inline-block; margin-right: 10px;" class="form-submit">Generar Gráfico
+            de
+            calor</button>
+        <div id="myModal2" class="modal">
+            <span class="close1">&times;</span>
+            <img class="modal-content" id="img012">
+        </div>
+        <button id="generateBtn3" style="display: inline-block; margin-right: 10px;" class="form-submit">Generar Gráfico
+            de
+            dispersion</button>
+        <div id="myModal3" class="modal">
+            <span class="close2">&times;</span>
+            <img class="modal-content" id="img013">
+        </div>
+    </div>
+    <div class="form-container">
+
+        <div class="form-section">
+            <h2>Caracteristicas 1</h2>
+            <label for="age" class="form-label">Cual es su edad?</label>
+            <input type="number" id="age" name="age" class="form-input" required
+                placeholder="Escriba su respuesta por favor" />
+
+            <label for="cholesterol" class="form-label">En cuanto tiene el nivel de colesterol?</label>
+            <input type="number" id="cholesterol" name="cholesterol" class="form-input" required
+                placeholder="Escriba su respuesta por favor" />
+
+            <label for="heart_rate" class="form-label">En cuanto tiene la frecuencia cardíaca?</label>
+            <input type="number" id="heart_rate" name="heart_rate" class="form-input" required
+                placeholder="Escriba su respuesta por favor" />
+
+            <label for="stress_level" class="form-label">En cuanto tiene el nivel de estrés?</label>
+            <input type="number" id="stress_level" name="stress_level" class="form-input" required
+                placeholder="Escriba su respuesta por favor" />
+
+            <label for="triglycerides" class="form-label">En cuanto tiene el nivel de triglicéridos?</label>
+            <input type="number" id="triglycerides" name="triglycerides" class="form-input" required
+                placeholder="Escriba su respuesta por favor" />
+
+            <label for="physical_activity_days_per_week" class="form-label">Cuantos días de actividad física realiza por
+                semana?</label>
+            <input type="number" id="physical_activity_days_per_week" name="physical_activity_days_per_week"
+                class="form-input" required placeholder="Escriba su respuesta por favor" />
+
+            <label for="sleep_hours_per_day" class="form-label">Cuantas horas duerme por día?</label>
+            <input type="number" id="sleep_hours_per_day" name="sleep_hours_per_day" class="form-input" required
+                placeholder="Escriba su respuesta por favor" />
+        </div>
+        <div class="form-section">
+            <h2>Caracteristicas 2</h2>
+            <label for="diabetes" class="form-label">Es diabetico?</label>
+            <select id="diabetes" name="diabetes" class="form-select" required>
+                <option value="" disabled selected>Seleccione una respuesta</option>
+                <option value="1">Sí</option>
+                <option value="0">No</option>
+            </select>
+
+            <label for="smoking" class="form-label">Fuma?</label>
+            <select id="smoking" name="smoking" class="form-select" required>
+                <option value="" disabled selected>Seleccione una respuesta</option>
+                <option value="1">Sí</option>
+                <option value="0">No</option>
+            </select>
+
+            <label for="obesity" class="form-label">Tiene Obesidad?</label>
+            <select id="obesity" name="obesity" class="form-select" required>
+                <option value="" disabled selected>Seleccione una respuesta</option>
+                <option value="1">Sí</option>
+                <option value="0">No</option>
+            </select>
+
+            <label for="alcohol_consumption" class="form-label">Consume alcohol?</label>
+            <select id="alcohol_consumption" name="alcohol_consumption" class="form-select" required>
+                <option value="" disabled selected>Seleccione una respuesta</option>
+                <option value="1">Sí</option>
+                <option value="0">No</option>
+            </select>
+
+            <label for="previous_heart_problems" class="form-label">Tiene problemas cardiacos previos?</label>
+            <select id="previous_heart_problems" name="previous_heart_problems" class="form-select" required>
+                <option value="" disabled selected>Seleccione una respuesta</option>
+                <option value="1">Sí</option>
+                <option value="0">No</option>
+            </select>
+
+            <label for="medication_use" class="form-label">Usa medicamentos?</label>
+            <select id="medication_use" name="medication_use" class="form-select" required>
+                <option value="" disabled selected>Seleccione una respuesta</option>
+                <option value="1">Sí</option>
+                <option value="0">No</option>
+            </select>
+        </div>
+        <div class="chat-container" style="text-align: center">
+            <div class="chat-header">
+                <h2>Chat</h2>
+            </div>
+            <div class="chat-body" id="chatbox">
+                <!-- Aquí se mostrarán los mensajes -->
+            </div>
+            <div class="chat-footer">
+                <button type="button" onclick="enviarDatosAlServidor()" class="form-submit">
+                    Enviar
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+
+<script>
+    var serverResponse =
+        "¡Hola! ¿Que tal?, por favor enviame sus datos para analizarlos";
+    $("#chatbox").prepend(
+        "<div class='chat-message server-message'>" + serverResponse + "</div>"
+    );
+
+    function enviarDatosAlServidor() {
+        var age = parseInt($("#age").val());
+        var cholesterol = parseInt($("#cholesterol").val());
+        var heartRate = parseInt($("#heart_rate").val());
+        var stressLevel = parseInt($("#stress_level").val());
+        var triglycerides = parseInt($("#triglycerides").val());
+        var physicalActivityDaysPerWeek = parseInt(
+            $("#physical_activity_days_per_week").val()
+        );
+        var sleepHoursPerDay = parseInt($("#sleep_hours_per_day").val());
+
+        var diabetes = parseInt($("#diabetes").val());
+        var smoking = parseInt($("#smoking").val());
+        var obesity = parseInt($("#obesity").val());
+        var alcoholConsumption = parseInt($("#alcohol_consumption").val());
+        var previousHeartProblems = parseInt(
+            $("#previous_heart_problems").val()
+        );
+        var medicationUse = parseInt($("#medication_use").val());
+
+        // Verificar si algún campo está vacío
+        if (
+            isNaN(age) ||
+            isNaN(cholesterol) ||
+            isNaN(heartRate) ||
+            isNaN(stressLevel) ||
+            isNaN(triglycerides) ||
+            isNaN(physicalActivityDaysPerWeek) ||
+            isNaN(sleepHoursPerDay) ||
+            isNaN(diabetes) ||
+            isNaN(smoking) ||
+            isNaN(obesity) ||
+            isNaN(alcoholConsumption) ||
+            isNaN(previousHeartProblems) ||
+            isNaN(medicationUse)
+        ) {
+            // Mostrar un Sweet Alert con un mensaje de error
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Por favor complete todos los campos.',
+            });
+            return;
+        }
+
+        var caracteristicas = {
+            caracteristicas: {
+                Age: age,
+                Cholesterol: cholesterol,
+                Heart_Rate: heartRate,
+                Diabetes: diabetes,
+                Smoking: smoking,
+                Obesity: obesity,
+                Alcohol_Consumption: alcoholConsumption,
+                Previous_Heart_Problems: previousHeartProblems,
+                Medication_Use: medicationUse,
+                Stress_Level: stressLevel,
+                Triglycerides: triglycerides,
+                Physical_Activity_Days_Per_Week: physicalActivityDaysPerWeek,
+                Sleep_Hours_Per_Day: sleepHoursPerDay,
+            },
+        };
+
+        console.log("Síntomas capturados:");
+        console.log(caracteristicas);
+
+        showLoader();
+
+        // Hacer scroll hacia abajo
+        scrollChatToBottom();
+
+        // Variable global para controlar si el mensaje de efectividad de la estimación ya se ha enviado
+        var accuracyMessageSent = false;
+        $.ajax({
+            url: "/predict",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(caracteristicas),
+            success: function (response) {
+                // Llamar a la función para mostrar la efectividad de la estimación si no se ha enviado previamente
+                // if (!accuracyMessageSent === true) {
+                //     showAccuracyMessage(response);
+                //     accuracyMessageSent = true; // Marcar que el mensaje ha sido enviado
+
+                // }
+                console.log("Predicción del servidor:", response.prediction);
+                // Aquí puedes mostrar la predicción al usuario o hacer cualquier otra cosa que necesites
+
+                // Mostrar mensaje adicional dependiendo de la respuesta del servidor
+                if (response.prediction.toLowerCase() === "enfermo") {
+                    updateServerResponse(
+                        "Enfermo, " +
+                        "de acuerdo al análisis que realizamos, usted puede sufrir ataques al corazón."
+                    );
+                } else if (response.prediction.toLowerCase() === "no enfermo") {
+                    updateServerResponse(
+                        "No enfermo, " +
+                        "de acuerdo al análisis que realizamos, usted no padece ataques al corazón y goza de buena salud."
+                    );
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error al enviar los síntomas al servidor:", error);
+            },
+        });
+    }
+
+    // Definir función para mostrar la efectividad de la estimación
+    function showAccuracyMessage(response) {
+        var accuracyMessage = `La efectividad con los datos de prueba con el modelo RandomForest es de ${response.estimacion_prueba} y con los datos de entrenamiento es de ${response.estimacion_entrenamiento}`;
+        $("#chatbox").prepend(
+            "<div class='chat-message server-message'>" +
+            accuracyMessage +
+            "</div>"
+        );
+    }
+
+    // Simulación de respuesta del servidor con retraso
+    function mensaje() {
+        setTimeout(function () {
+            hideLoader();
+            var serverResponse =
+                "¡Hola! ¿Necesitas ayuda de nuevo?, enviame los datos";
+            $("#chatbox").append(
+                "<div class='chat-message server-message'>" +
+                serverResponse +
+                "</div>"
+            );
+            scrollChatToBottom(); // Desplazar automáticamente hacia abajo
+        }, 2000);
+    }
+
+    function showLettersByInterval(message, element) {
+        var index = 0;
+        var messageContainer = $(
+            "<div class='chat-message server-message'></div>"
+        );
+        $(element).append(messageContainer);
+
+        var interval = setInterval(function () {
+            if (index < message.length) {
+                messageContainer.append(message[index]);
+                index++;
+            } else {
+                clearInterval(interval); // Detener la animación cuando se haya mostrado todo el mensaje
+                mensaje();
+                scrollChatToBottom();
+            }
+        }, 50); // Cambia este valor para ajustar la velocidad de la animación
+    }
+
+    function showLoader() {
+        $("#chatbox").append("<div class='loader'></div>");
+    }
+
+    function hideLoader() {
+        $(".loader").remove();
+    }
+
+    function scrollChatToBottom() {
+        var chatBody = document.getElementById("chatbox");
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function updateServerResponse(response) {
+        setTimeout(function () {
+            $(".loader").remove();
+            //$("#chatbox").append("<div class='chat-message server-message'>" + response + "</div>");
+            showLettersByInterval(response, "#chatbox");
+        }, 2000);
+    }
+</script>
+
+<script>
+    document.getElementById('generateBtn').addEventListener('click', function () {
+        fetch('/generate_chart', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.chart_generated) {
+                    var modal = document.getElementById('myModal');
+                    var modalImg = document.getElementById("img01");
+                    modal.style.display = "block";
+                    modalImg.src = "static/bar_chart.png";
+
+                    var span = document.getElementsByClassName("close")[0];
+                    span.onclick = function () {
+                        modal.style.display = "none";
+                    }
+                }
+            });
+    });
+
+</script>
+
+<script>
+    document.getElementById('generateBtn2').addEventListener('click', function () {
+        fetch('/generate_heatmap', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.generate_heatmap) {
+                    var modal = document.getElementById('myModal2');
+                    var modalImg = document.getElementById("img012");
+                    modal.style.display = "block";
+                    modalImg.src = "static/heatmap.png";
+
+                    var span = document.getElementsByClassName("close1")[0];
+                    span.onclick = function () {
+                        modal.style.display = "none";
+                    }
+                }
+            });
+    });
+
+</script>
+
+<script>
+    document.getElementById('generateBtn3').addEventListener('click', function () {
+        fetch('/generate_dispersion', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.generate_dispersion) {
+                    var modal = document.getElementById('myModal3');
+                    var modalImg = document.getElementById("img013");
+                    modal.style.display = "block";
+                    modalImg.src = "static/dispersion.png";
+
+                    var span = document.getElementsByClassName("close2")[0];
+                    span.onclick = function () {
+                        modal.style.display = "none";
+                    }
+                }
+            });
+    });
+
+</script>
