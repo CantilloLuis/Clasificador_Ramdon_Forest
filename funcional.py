@@ -1,3 +1,4 @@
+#Librerias utilizadas
 from flask import Flask, request, jsonify, render_template
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -6,15 +7,10 @@ import matplotlib.pyplot as plt
 import matplotlib
 import seaborn as sns
 
-
 matplotlib.use('agg')  # Evitar la inicialización de Tkinter
-
-
-
 
 # Carga el dataset
 df = pd.read_excel(r"C:\Users\canti\Downloads\ataques_corazon.xlsx")
-
 
 def sano_enfermo(fila):
   result = 'enfermo'
