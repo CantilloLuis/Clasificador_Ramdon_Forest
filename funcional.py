@@ -13,7 +13,7 @@ matplotlib.use('agg')  # Evitar la inicialización de Tkinter
 
 
 # Carga el dataset
-df = pd.read_excel(r"C:\Users\canti\Downloads\corazon.xlsx")
+df = pd.read_excel(r"C:\Users\canti\Downloads\ataques_corazon.xlsx")
 
 
 def sano_enfermo(fila):
