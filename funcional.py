@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 import matplotlib.pyplot as plt
 import matplotlib
+import openai
 import seaborn as sns
 
 matplotlib.use('agg')  # Evitar la inicialización de Tkinter
@@ -151,6 +152,27 @@ def predict():
       'estimacion_prueba': estimacion_prueba,
       'estimacion_entrenamiento': estimacion_entrenamiento
     })
+
+# Api Key extraida de la pagina de openai
+openai.api_key = "sk-proj-ccwOsumoeKDu9Z2tpjeQT3BlbkFJNYAqpAVAs9fw5BC7P3qG"
+
+#Ruta para realizarle preguntas a la api con el modelo gpt-3.5-turbo y este nos de un respuesta, la cual se envia a la vista y se muestre en el chat.
+@app.route('/obtener_recomendaciones', methods=['POST'])
+def obtener_recomendaciones():
+    prediccion = request.data.decode('utf-8')  # Obtiene el valor como texto directamente
+
+    mensaje_chatgpt = f"La predicción del modelo es: {prediccion}. ¿Qué recomendaciones puedes dar basadas en esto?"
+
+    respuesta_chatgpt = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "Eres un experto en dar recomendaciones personalizadas."},
+            {"role": "user", "content": mensaje_chatgpt}
+        ]
+    )
+
+    recomendaciones = respuesta_chatgpt.choices[0].message.content
+    return jsonify({'recomendaciones': recomendaciones})
 
 if __name__ == '__main__':
     app.run(debug=True)

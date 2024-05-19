@@ -12,6 +12,7 @@
 </head>
 
 <body>
+    <!-- Formulario -->
     <div class="form-header">
         <h1>Formulario de atributos</h1>
     </div>
@@ -121,13 +122,24 @@
                 <h2>Chat</h2>
             </div>
             <div class="chat-body" id="chatbox">
-                <!-- Aquí se mostrarán los mensajes -->
+                <!-- Aquí se mostrarán los mensajes de la prediccion que realizo el algoritmo RamdonForest -->
             </div>
             <div class="chat-footer">
+                <!-- Boton para llamar a un metodo que captura los datos ingresados por el usuario y los envia al servidor para el posterior analisis -->
                 <button type="button" onclick="enviarDatosAlServidor()" class="form-submit">
                     Enviar
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- En este chat se mostraran las recomendaciones que da la api de openAI de acuerdo a la prediccion -->
+    <div class="chat-container" style="text-align: center">
+        <div class="chat-header">
+            <h2>Chat</h2>
+        </div>
+        <div class="chat-body" id="chatbox5">
+            <!-- Aquí se mostrarán los mensajes -->
         </div>
     </div>
 </body>
@@ -136,12 +148,14 @@
 
 
 <script>
+    //Se enviara el primer mensaje que tendra el chat
     var serverResponse =
         "¡Hola! ¿Que tal?, por favor enviame sus datos para analizarlos";
     $("#chatbox").prepend(
         "<div class='chat-message server-message'>" + serverResponse + "</div>"
     );
 
+    //En este metodo se capturan y envian los datos al servidor para el posterior analisis
     function enviarDatosAlServidor() {
         var age = parseInt($("#age").val());
         var cholesterol = parseInt($("#cholesterol").val());
@@ -178,7 +192,7 @@
             isNaN(previousHeartProblems) ||
             isNaN(medicationUse)
         ) {
-            // Mostrar un Sweet Alert con un mensaje de error
+            // Mostrar un Sweet Alert con un mensaje de error por si algun campo no esta diligenciado
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -187,6 +201,7 @@
             return;
         }
 
+        //Las caracteristicas capturadas del usuario
         var caracteristicas = {
             caracteristicas: {
                 Age: age,
@@ -208,9 +223,10 @@
         console.log("Síntomas capturados:");
         console.log(caracteristicas);
 
+        //Barra de carga
         showLoader();
 
-        // Hacer scroll hacia abajo
+        //Hacer scroll hacia abajo
         scrollChatToBottom();
 
         // Variable global para controlar si el mensaje de efectividad de la estimación ya se ha enviado
@@ -242,12 +258,30 @@
                         "de acuerdo al análisis que realizamos, usted no padece ataques al corazón y goza de buena salud."
                     );
                 }
+
+                fetch('/obtener_recomendaciones', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain'
+                    },
+                    body: response.prediction
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        const recomendaciones = data.recomendaciones;
+                        updateServerResponse2(recomendaciones);
+
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
             },
             error: function (xhr, status, error) {
                 console.error("Error al enviar los síntomas al servidor:", error);
             },
         });
     }
+
 
     // Definir función para mostrar la efectividad de la estimación
     function showAccuracyMessage(response) {
@@ -274,6 +308,7 @@
         }, 2000);
     }
 
+    //Funcion que se utiliza para enviarle un conjunto de texto y este lo devuelva letra por letra.
     function showLettersByInterval(message, element) {
         var index = 0;
         var messageContainer = $(
@@ -293,6 +328,25 @@
         }, 50); // Cambia este valor para ajustar la velocidad de la animación
     }
 
+    //Funcion que se utiliza para enviarle un conjunto de texto y este lo devuelva letra por letra.
+    function showLettersByInterval2(message, element) {
+        var index = 0;
+        var messageContainer = $(
+            "<div class='chat-message server-message'></div>"
+        );
+        $(element).append(messageContainer);
+
+        var interval = setInterval(function () {
+            if (index < message.length) {
+                messageContainer.append(message[index]);
+                index++;
+            } else {
+                clearInterval(interval); // Detener la animación cuando se haya mostrado todo el mensaje
+                scrollChatToBottom();
+            }
+        }, 50); // Cambia este valor para ajustar la velocidad de la animación
+    }
+
     function showLoader() {
         $("#chatbox").append("<div class='loader'></div>");
     }
@@ -306,6 +360,7 @@
         chatBody.scrollTop = chatBody.scrollHeight;
     }
 
+    //Funcion para enviar al chat donde se mostrara la prediccion del algoritmo, se enviara letra por letra.
     function updateServerResponse(response) {
         setTimeout(function () {
             $(".loader").remove();
@@ -313,9 +368,20 @@
             showLettersByInterval(response, "#chatbox");
         }, 2000);
     }
+
+    //Segunda funcion para enviar las recomendaciones que da la api de OpenAi de acuerdo a la predeccion del algoritmo, se enviaran letra por letra.
+    function updateServerResponse2(response) {
+        setTimeout(function () {
+            $(".loader").remove();
+            //$("#chatbox").append("<div class='chat-message server-message'>" + response + "</div>");
+            showLettersByInterval2(response, "#chatbox5");
+        }, 2000);
+    }
 </script>
 
+
 <script>
+    //Script para mostrar la grafica de barra al undirle al boton
     document.getElementById('generateBtn').addEventListener('click', function () {
         fetch('/generate_chart', { method: 'POST' })
             .then(response => response.json())
@@ -337,6 +403,7 @@
 </script>
 
 <script>
+    //Script para mostrar la grafica de mapa de calor al undirle al boton
     document.getElementById('generateBtn2').addEventListener('click', function () {
         fetch('/generate_heatmap', { method: 'POST' })
             .then(response => response.json())
@@ -358,6 +425,7 @@
 </script>
 
 <script>
+    //Script para mostrar la grafica de dispersion al undirle al boton
     document.getElementById('generateBtn3').addEventListener('click', function () {
         fetch('/generate_dispersion', { method: 'POST' })
             .then(response => response.json())
