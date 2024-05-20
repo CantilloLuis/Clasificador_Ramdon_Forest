@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 import openai
 import seaborn as sns
+from sklearn import tree
 
 matplotlib.use('agg')  # Evitar la inicialización de Tkinter
 
@@ -72,6 +73,17 @@ X_train, X_test, y_train,y_test = train_test_split(X,y,random_state = 0,test_siz
 # Entrenamiento del modelo
 forest = RandomForestClassifier(n_estimators = 10,criterion='gini')
 forest.fit(X_train,y_train)
+
+arbol_individual = forest.estimators_[0]  # Obtener el primer árbol del Random Forest
+nombres_columnas = ['Age', 'Cholesterol', 'Heart_Rate', 'Diabetes', 'Smoking', 'Obesity', 'Alcohol_Consumption', 'Previous_Heart_Problems', 'Medication_Use', 'Stress_Level', 'Triglycerides', 'Physical_Activity_Days_Per_Week', 'Sleep_Hours_Per_Day']
+
+def generar_arbol_decision():
+  plt.figure(figsize=(12, 8))
+  tree.plot_tree(arbol_individual, feature_names=nombres_columnas, filled=True, rounded=True,fontsize=7,max_depth=3)
+  plt.savefig('static/arbol_decision.png',dpi=300)  # Guardar el gráfico como imagen
+  plt.close()
+
+generar_arbol_decision()
 
 estimacion_prueba = forest.score(X_test,y_test)
 estimacion_entrenamiento = forest.score(X_train,y_train)

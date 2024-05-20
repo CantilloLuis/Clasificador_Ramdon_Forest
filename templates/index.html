@@ -119,7 +119,7 @@
         </div>
         <div class="chat-container" style="text-align: center">
             <div class="chat-header">
-                <h2>Chat</h2>
+                <h2>Chat - Algoritmo</h2>
             </div>
             <div class="chat-body" id="chatbox">
                 <!-- Aquí se mostrarán los mensajes de la prediccion que realizo el algoritmo RamdonForest -->
@@ -130,17 +130,21 @@
                     Enviar
                 </button>
             </div>
+            <button type="button" id="limpiarChat" class="form-submit2">Limpiar Chat</button>
+
         </div>
     </div>
 
     <!-- En este chat se mostraran las recomendaciones que da la api de openAI de acuerdo a la prediccion -->
     <div class="chat-container" style="text-align: center">
         <div class="chat-header">
-            <h2>Chat</h2>
+            <h2>Chat de recomendaciones</h2>
         </div>
         <div class="chat-body" id="chatbox5">
             <!-- Aquí se mostrarán los mensajes -->
         </div>
+        <button type="button" id="limpiarChat2" class="form-submit2">Limpiar Chat</button>
+
     </div>
 </body>
 
@@ -444,4 +448,30 @@
             });
     });
 
+</script>
+
+
+<script>
+    //Script para limpiar los mensajes del chat del algoritmo
+    const limpiarChat = document.getElementById("limpiarChat");
+    const chatbox = document.getElementById("chatbox");
+
+    limpiarChat.addEventListener("click", () => {
+        chatbox.innerHTML = ''; // Borra todo el contenido del chatbox
+
+        //Se enviara el primer mensaje que tendra el chat
+        var serverResponse =
+            "¡Hola! ¿Que tal?, por favor enviame sus datos para analizarlos";
+        $("#chatbox").prepend(
+            "<div class='chat-message server-message'>" + serverResponse + "</div>"
+        );
+    });
+
+    //Script para limpiar los mensajes del chat de OpenAi
+    const limpiarChat2 = document.getElementById("limpiarChat2");
+    const chatbox5 = document.getElementById("chatbox5");
+
+    limpiarChat2.addEventListener("click", () => {
+        chatbox5.innerHTML = ''; // Borra todo el contenido del chatbox
+    });
 </script>
