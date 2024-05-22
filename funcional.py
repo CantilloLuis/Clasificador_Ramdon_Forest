@@ -74,17 +74,17 @@ X_train, X_test, y_train,y_test = train_test_split(X,y,random_state = 0,test_siz
 forest = RandomForestClassifier(n_estimators = 10,criterion='gini')
 forest.fit(X_train,y_train)
 
-arbol_individual = forest.estimators_[0]  # Obtener el primer árbol del Random Forest
-nombres_columnas = ['Age', 'Cholesterol', 'Heart_Rate', 'Diabetes', 'Smoking', 'Obesity', 'Alcohol_Consumption', 'Previous_Heart_Problems', 'Medication_Use', 'Stress_Level', 'Triglycerides', 'Physical_Activity_Days_Per_Week', 'Sleep_Hours_Per_Day']
-
-def generar_arbol_decision():
+# Metodo para generar el grafico de arbol de desicion
+def generate_bar_arbol_decision():
+  arbol_individual = forest.estimators_[0]  # Obtener el primer árbol del Random Forest
+  nombres_columnas = ['Age', 'Cholesterol', 'Heart_Rate', 'Diabetes', 'Smoking', 'Obesity', 'Alcohol_Consumption', 'Previous_Heart_Problems', 'Medication_Use', 'Stress_Level', 'Triglycerides', 'Physical_Activity_Days_Per_Week', 'Sleep_Hours_Per_Day']
+  
   plt.figure(figsize=(12, 8))
   tree.plot_tree(arbol_individual, feature_names=nombres_columnas, filled=True, rounded=True,fontsize=7,max_depth=3)
   plt.savefig('static/arbol_decision.png',dpi=300)  # Guardar el gráfico como imagen
   plt.close()
 
-generar_arbol_decision()
-
+#Se imprime el valor estimacion prueba y estimacion entrenamiento.
 estimacion_prueba = forest.score(X_test,y_test)
 estimacion_entrenamiento = forest.score(X_train,y_train)
 print(f'La efectividad con la data de prueba con el modelo RandomForest es de {estimacion_prueba} y con la data de entranamiento es de {estimacion_entrenamiento}')
@@ -142,6 +142,12 @@ def generate_heatmap():
 def generate_dispersion():
   generate_bar_dispersion()
   return jsonify({'generate_dispersion': True})
+
+# Ruta para generar el grafico de arbol de desicion
+@app.route('/generate_arbol_decision', methods=['POST'])
+def generate_arbol_decision():
+  generate_bar_arbol_decision()
+  return jsonify({'generate_arbol_decision': True})
 
 # Ruta para la predicción
 @app.route('/predict', methods=['POST'])
