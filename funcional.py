@@ -177,10 +177,28 @@ openai.api_key = "sk-proj-ccwOsumoeKDu9Z2tpjeQT3BlbkFJNYAqpAVAs9fw5BC7P3qG"
 #Ruta para realizarle preguntas a la api con el modelo gpt-3.5-turbo y este nos de un respuesta, la cual se envia a la vista y se muestre en el chat.
 @app.route('/obtener_recomendaciones', methods=['POST'])
 def obtener_recomendaciones():
-    prediccion = request.data.decode('utf-8')  # Obtiene el valor como texto directamente
+    
+    caracteristicas = request.get_json()
 
-    mensaje_chatgpt = f"La predicción del modelo es: {prediccion}. ¿Qué recomendaciones puedes dar basadas en esto?"
+    mensaje_chatgpt = f"""
+    Analiza las siguientes características de salud de un usuario que ingreso esa informacion en el front, que segun la prediccion del algoritmo ramdonForest es:  {caracteristicas['caracteristicas2']['Prediccion']} de acuerdo a ataques al corazon:
 
+    Edad: {caracteristicas['caracteristicas2']['Age']}
+    Colesterol: {caracteristicas['caracteristicas2']['Cholesterol']}
+    Ritmo Cardíaco: {caracteristicas['caracteristicas2']['Heart_Rate']}
+    Diabetes: {caracteristicas['caracteristicas2']['Diabetes']}
+    Fumador: {caracteristicas['caracteristicas2']['Smoking']}
+    Obesidad: {caracteristicas['caracteristicas2']['Obesity']}
+    Consumo de Alcohol: {caracteristicas['caracteristicas2']['Alcohol_Consumption']}
+    Problemas Cardíacos Previos: {caracteristicas['caracteristicas2']['Previous_Heart_Problems']}
+    Uso de Medicamentos: {caracteristicas['caracteristicas2']['Medication_Use']}
+    Nivel de Estrés: {caracteristicas['caracteristicas2']['Stress_Level']}
+    Triglicéridos: {caracteristicas['caracteristicas2']['Triglycerides']}
+    Días de Actividad Física por Semana: {caracteristicas['caracteristicas2']['Physical_Activity_Days_Per_Week']}
+    Horas de Sueño por Día: {caracteristicas['caracteristicas2']['Sleep_Hours_Per_Day']}
+
+    ¿Qué recomendaciones puedes dar basadas en esto?:
+    """
     respuesta_chatgpt = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[

@@ -246,6 +246,7 @@
 
         // Variable global para controlar si el mensaje de efectividad de la estimación ya se ha enviado
         var accuracyMessageSent = false;
+        //Ajax para la prediccion 
         $.ajax({
             url: "/predict",
             type: "POST",
@@ -274,12 +275,31 @@
                     );
                 }
 
+
+                var caracteristicas2 = {
+                    caracteristicas2: {
+                        Age: age,
+                        Cholesterol: cholesterol,
+                        Heart_Rate: heartRate,
+                        Diabetes: diabetes,
+                        Smoking: smoking,
+                        Obesity: obesity,
+                        Alcohol_Consumption: alcoholConsumption,
+                        Previous_Heart_Problems: previousHeartProblems,
+                        Medication_Use: medicationUse,
+                        Stress_Level: stressLevel,
+                        Triglycerides: triglycerides,
+                        Physical_Activity_Days_Per_Week: physicalActivityDaysPerWeek,
+                        Sleep_Hours_Per_Day: sleepHoursPerDay,
+                        Prediccion: response.prediction
+                    },
+                };
                 fetch('/obtener_recomendaciones', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'text/plain'
+                        'Content-Type': 'application/json'
                     },
-                    body: response.prediction
+                    body: JSON.stringify(caracteristicas2)
                 })
                     .then(response => response.json())
                     .then(data => {
