@@ -12,7 +12,7 @@ from sklearn import tree
 matplotlib.use('agg')  # Evitar la inicialización de Tkinter
 
 # Carga el dataset
-df = pd.read_excel(r"C:\Users\canti\Downloads\ataques_corazon.xlsx")
+df = pd.read_excel(r"ataques_corazon.xlsx")
 
 def sano_enfermo(fila):
   result = 'enfermo'
