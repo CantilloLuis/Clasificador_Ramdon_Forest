@@ -8,6 +8,8 @@ import matplotlib
 import openai
 import seaborn as sns
 from sklearn import tree
+from decouple import config
+
 
 matplotlib.use('agg')  # Evitar la inicialización de Tkinter
 
@@ -192,7 +194,7 @@ def predict():
     })
 
 # Api Key extraida de la pagina de openai
-openai.api_key = "sk-proj-ccwOsumoeKDu9Z2tpjeQT3BlbkFJNYAqpAVAs9fw5BC7P3qG"
+openai.api_key = config('API_KEY')
 
 #Ruta para realizarle preguntas a la api con el modelo gpt-3.5-turbo y este nos de un respuesta, la cual se envia a la vista y se muestre en el chat.
 @app.route('/obtener_recomendaciones', methods=['POST'])
