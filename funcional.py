@@ -122,8 +122,28 @@ app.static_folder = 'static'
 
 # Ruta principal para la página de inicio
 @app.route('/')
+def index2():
+  return render_template('index2.html')
+
+#Rutas secundarias para retornar la vista del analizador
+@app.route('/analizador')
 def index():
   return render_template('index.html')
+
+@app.route('/Analizador', methods=['GET', 'POST'])
+def Analizador():
+  if request.method == 'POST':
+    # Procesa los datos del formulario aquí si es necesario
+    pass
+  return render_template('index.html')
+
+# Ruta para regresar a la vista principal
+@app.route('/Principal', methods=['GET', 'POST'])
+def Principal():
+  if request.method == 'POST':
+    # Procesa los datos del formulario aquí si es necesario
+    pass
+  return render_template('index2.html')
 
 # Ruta para generar el grafico de barras
 @app.route('/generate_chart', methods=['POST'])

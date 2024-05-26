@@ -50,6 +50,11 @@
             <span class="close3">&times;</span>
             <img class="modal-content" id="img014">
         </div>
+
+        <!-- Boton para volver a la vista principal -->
+        <form id="analizadorForm" action="{{ url_for('Principal') }}" method="POST">
+            <button type="submit" id="analizadorBtn" class="form-submit2">Volver al principal</button>
+        </form>
     </div>
     <div class="form-container">
 
@@ -527,4 +532,22 @@
     limpiarChat2.addEventListener("click", () => {
         chatbox5.innerHTML = ''; // Borra todo el contenido del chatbox
     });
+</script>
+
+
+<script>
+    // Script para regresar a la vista principal
+    document.getElementById('analizadorBtn').addEventListener('click', function () {
+        // Crea el iframe
+        const iframe = document.createElement('iframe');
+        iframe.src = '{{ url_for("Principal") }}';
+        iframe.width = '100%'; // Ajusta el ancho según tus necesidades
+        iframe.height = '800px'; // Ajusta la altura según tus necesidades
+
+        // Reemplaza el contenido del contenedor con el iframe
+        const iframeContainer = document.getElementById('iframeContainer');
+        iframeContainer.innerHTML = ''; // Limpia el contenedor
+        iframeContainer.appendChild(iframe);
+    });
+
 </script>

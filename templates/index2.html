@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analizador</title>
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- swiper css link  -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+
+<body>
+
+    <header class="header">
+
+        <a href="#" class="logo"> <i class="fa-solid fa-heart"></i> Analizador </a>
+        <nav class="navbar">
+            <a href="#principal">Principal</a>
+            <a href="#contexto">Contexto</a>
+            <a href="#funciones">Funciones</a>
+            <a href="#analizador">Analizador</a>
+        </nav>
+
+        <button type="submit" id="analizadorBtn" class="btn"></button>
+
+
+
+    </header>
+
+    <!-- header end -->
+
+    <!-- home -->
+
+    <section class="home" id="principal">
+
+        <div class="content">
+            <h3 style="color: black;">Bienvenido </h3>
+
+            <p style="color: black; text-transform: none;">Introduce tus datos en nuestro analizador y verifica si
+                sufres <br> de ataques al corazon, nuestro sistema buscara las mejores recomendaciones dependiedo del
+                resultado.</p>
+            </p>
+            <form id="analizadorForm" action="{{ url_for('Analizador') }}" method="POST">
+                <button type="submit" id="analizadorBtn" class="btn">Hazlo</button>
+            </form>
+        </div>
+
+
+    </section>
+
+    <!-- home end -->
+
+    <!-- about us section-->
+
+    <section class="about" id="contexto">
+
+        <h1 class="heading"> Ataques al Corazon </h1>
+
+        <div class="row">
+
+            <div class="image">
+                <img src="static/corazonAbout.png" alt="">
+            </div>
+
+            <div class="content">
+                <h3 style="text-transform: none;">Por tu salud ponte pilas!!!</h3>
+                <p style="text-transform: none;">Los ataques al corazón, también conocidos como infartos
+                    de miocardio, son eventos médicos graves que
+                    ocurren cuando el
+                    flujo de sangre que lleva oxígeno al corazón se bloquea repentinamente. Esta obstrucción
+                    generalmente es causada por la
+                    acumulación de placa en las arterias coronarias, que son los vasos sanguíneos que suministran sangre
+                    al músculo
+                    cardíaco.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- about end -->
+
+
+    <!-- services -->
+
+    <section class="services" id="funciones">
+
+        <h1 class="heading">Funciones</h1>
+
+        <div class="box-container">
+
+            <div class="box">
+                <img src="static/formulario.png" alt="">
+                <h3>FORMULARIO DE ENTRADA</h3>
+                <p style="text-transform: none;">Permite al usuario ingresar sus datos de salud.</p>
+            </div>
+
+            <div class="box">
+                <img src="static/prediccion.png" alt="">
+                <h3>PREDICCIÓN</h3>
+                <p style="text-transform: none;">Se envía los datos al backend, se obtiene la predicción del algoritmo y
+                    se muestra al usuario.</p>
+            </div>
+
+            <div class="box">
+                <img src="static/recomendaciones.png" alt="">
+                <h3>RECOMENDACIONES</h3>
+                <p style="text-transform: none;">Si la predicción indica riesgo de ataque cardíaco, el backend consulta
+                    a GPT-3.5 para obtener
+                    recomendaciones personalizadas y las muestra al usuario.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- services end-->
+
+    <!-- swiper js link  -->
+    <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+
+
+</body>
+
+</html>
+
+<script>
+    let menu = document.querySelector("#menu-btn");
+    let navbar = document.querySelector(".header .navbar");
+
+    menu.onclick = () => {
+        menu.classList.toggle('fa-times');
+        navbar.classList.toggle('active');
+    }
+
+    window.onscroll = () => {
+        menu.classList.remove('fa-times');
+        navbar.classList.remove('active');
+    }
+
+
+    var swiper = new Swiper(".team-slider", {
+        loop: true,
+        grabCursor: true,
+        spaceBetween: 20,
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+            },
+            768: {
+                slidesPerView: 2,
+            },
+            991: {
+                slidesPerView: 3,
+            },
+        },
+    });
+</script>
+
+<script>
+    document.getElementById('analizadorBtn').addEventListener('click', function () {
+        // Crea el iframe
+        const iframe = document.createElement('iframe');
+        iframe.src = '{{ url_for("Analizador") }}';
+        iframe.width = '100%'; // Ajusta el ancho según tus necesidades
+        iframe.height = '800px'; // Ajusta la altura según tus necesidades
+
+        // Reemplaza el contenido del contenedor con el iframe
+        const iframeContainer = document.getElementById('iframeContainer');
+        iframeContainer.innerHTML = ''; // Limpia el contenedor
+        iframeContainer.appendChild(iframe);
+    });
+
+</script>
