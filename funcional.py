@@ -12,9 +12,7 @@ from sklearn import tree
 matplotlib.use('agg')  # Evitar la inicialización de Tkinter
 
 # Carga el dataset
-
-url = "https://github.com/CantilloLuis/Clasificador_Ramdon_Forest/master/ataques_corazon.xlsx"  # Reemplaza con tu URL
-df = pd.read_excel(url, engine='openpyxl')  
+df = pd.read_excel(r"C:\Users\canti\Downloads\ataques_corazon.xlsx")
 
 def sano_enfermo(fila):
   result = 'enfermo'
