@@ -54,7 +54,7 @@ def generate_bar_heatmap():
 def generate_bar_dispersion():
   sampled_data = df.sample(n=1000)  # Tomar una muestra aleatoria de 1000 puntos
   plt.scatter(sampled_data['Age'], sampled_data['Cholesterol'],s=5,alpha=0.5)
-  plt.xlabel('Age')
+  plt.xlabel('Age') |1
   plt.ylabel('Cholesterol')
   plt.title('Gráfico de Dispersión de Age vs Cholesterol')
   plt.savefig('static/dispersion.png')  # Guardar el mapa de calor como imagen
