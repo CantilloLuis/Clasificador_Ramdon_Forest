@@ -194,7 +194,7 @@ def predict():
     })
 
 # Api Key extraida de la pagina de openai
-openai.api_key = config('API_KEY')
+# openai.api_key = config('API_KEY')
 
 #Ruta para realizarle preguntas a la api con el modelo gpt-3.5-turbo y este nos de un respuesta, la cual se envia a la vista y se muestre en el chat.
 @app.route('/obtener_recomendaciones', methods=['POST'])
