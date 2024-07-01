@@ -296,7 +296,7 @@
                     );
                 }
 
-
+                // Caracteristicas que se capturan en el front las cuales se envian al servidor para el posterior analisis
                 var caracteristicas2 = {
                     caracteristicas2: {
                         Age: age,
@@ -392,6 +392,7 @@
         );
         $(element).append(messageContainer);
 
+        //Variable que permite 
         var interval = setInterval(function () {
             if (index < message.length) {
                 messageContainer.append(message[index]);
