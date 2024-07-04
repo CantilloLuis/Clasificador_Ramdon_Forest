@@ -315,6 +315,7 @@
                         Prediccion: response.prediction
                     },
                 };
+                //metodo fecth para enviar las recomendaciones como json para que sea manipulado en el backend
                 fetch('/obtener_recomendaciones', {
                     method: 'POST',
                     headers: {
