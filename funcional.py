@@ -200,6 +200,7 @@ def predict():
 @app.route('/obtener_recomendaciones', methods=['POST'])
 def obtener_recomendaciones():
     
+    #Caracteristicas que se capturan en el front y se envian en el mensaje de chatgpt para que el modelo responda.
     caracteristicas = request.get_json()
 
     mensaje_chatgpt = f"""
