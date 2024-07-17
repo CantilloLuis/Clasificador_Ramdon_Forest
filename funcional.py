@@ -202,7 +202,7 @@ def obtener_recomendaciones():
     
     #Caracteristicas que se capturan en el front y se envian en el mensaje de chatgpt para que el modelo responda.
     caracteristicas = request.get_json()
-
+    #Estructura del mensaje que se enviara a el modelo gpt-3.5-turbo, para que de una retroalimentacion sobre recomendaciones basandose en los datos que suministre la persona.
     mensaje_chatgpt = f"""
     Analiza las siguientes características de salud de un usuario que ingreso esa informacion en el front, que segun la prediccion del algoritmo ramdonForest es:  {caracteristicas['caracteristicas2']['Prediccion']} de acuerdo a ataques al corazon:
 
