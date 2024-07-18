@@ -222,6 +222,7 @@ def obtener_recomendaciones():
 
     ¿Qué recomendaciones puedes dar basadas en esto?:
     """
+    #Variable donde le asignamos un metodo con varios parametros como el modelo y el mensaje.
     respuesta_chatgpt = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
