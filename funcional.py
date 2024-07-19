@@ -230,7 +230,7 @@ def obtener_recomendaciones():
             {"role": "user", "content": mensaje_chatgpt}
         ]
     )
-
+    #variable de recomendaciones que almacena la respuesta que devuelve chatgpt sobre los datos capturados de la vista y del resultado del algoritmo de prediccion
     recomendaciones = respuesta_chatgpt.choices[0].message.content
     return jsonify({'recomendaciones': recomendaciones})
 
