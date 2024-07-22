@@ -225,9 +225,11 @@ def obtener_recomendaciones():
     #Variable donde le asignamos un metodo con varios parametros como el modelo y el mensaje.
     respuesta_chatgpt = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
+        #mensaje donde le asignamos el rol del systema y su content
         messages=[
             {"role": "system", "content": "Eres un experto en dar recomendaciones personalizadas."},
             {"role": "user", "content": mensaje_chatgpt}
+          
         ]
     )
     
