@@ -2,6 +2,7 @@
 from flask import Flask, request, jsonify, render_template
 #libreria de pandas que nos permite poder utilizar funciones que nos ayudan a manipular datos y obtener resultados significativos
 import pandas as pd
+#Esta función divide un conjunto de datos en dos subconjuntos, típicamente uno para entrenamiento y otro para prueba, de forma aleatoria pero con una proporción definida por el usuario.
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 import matplotlib.pyplot as plt
