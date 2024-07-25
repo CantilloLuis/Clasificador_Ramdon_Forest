@@ -1,5 +1,6 @@
 #Librerias utilizadas
 from flask import Flask, request, jsonify, render_template
+#libreria de pandas que nos permite poder utilizar funciones que nos ayudan a manipular datos y obtener resultados significativos
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
