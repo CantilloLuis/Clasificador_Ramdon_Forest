@@ -5,6 +5,7 @@ import pandas as pd
 #Esta función divide un conjunto de datos en dos subconjuntos, típicamente uno para entrenamiento y otro para prueba, de forma aleatoria pero con una proporción definida por el usuario.
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
+#Este módulo es una colección de funciones que hacen que matplotlib funcione de manera similar a MATLAB. Se utiliza para crear gráficos y visualizaciones de datos.
 import matplotlib.pyplot as plt
 import matplotlib
 import openai
