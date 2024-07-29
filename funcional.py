@@ -8,6 +8,7 @@ from sklearn.ensemble import RandomForestClassifier
 #Este módulo es una colección de funciones que hacen que matplotlib funcione de manera similar a MATLAB. Se utiliza para crear gráficos y visualizaciones de datos.
 import matplotlib.pyplot as plt
 import matplotlib
+#Esta biblioteca es el SDK de Python para interactuar con la API de OpenAI, que permite realizar tareas como generar texto, traducir idiomas, crear resúmenes, entre otras funcionalidades avanzadas de procesamiento de lenguaje natural (NLP)
 import openai
 import seaborn as sns
 from sklearn import tree
