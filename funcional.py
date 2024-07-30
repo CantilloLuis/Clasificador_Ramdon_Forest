@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 #Esta biblioteca es el SDK de Python para interactuar con la API de OpenAI, que permite realizar tareas como generar texto, traducir idiomas, crear resúmenes, entre otras funcionalidades avanzadas de procesamiento de lenguaje natural (NLP)
 import openai
+#Es una biblioteca de visualización de datos basada en matplotlib que proporciona una interfaz de alto nivel para dibujar gráficos estadísticos atractivos y fáciles de interpretar.
 import seaborn as sns
 from sklearn import tree
 from decouple import config
