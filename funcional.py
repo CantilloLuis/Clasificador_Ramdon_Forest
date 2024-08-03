@@ -12,6 +12,7 @@ import matplotlib
 import openai
 #Es una biblioteca de visualización de datos basada en matplotlib que proporciona una interfaz de alto nivel para dibujar gráficos estadísticos atractivos y fáciles de interpretar.
 import seaborn as sns
+#Este módulo contiene algoritmos para construir árboles de decisión, que son modelos predictivos utilizados tanto para clasificación como para regresión.
 from sklearn import tree
 from decouple import config
 
