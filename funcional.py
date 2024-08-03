@@ -14,6 +14,7 @@ import openai
 import seaborn as sns
 #Este módulo contiene algoritmos para construir árboles de decisión, que son modelos predictivos utilizados tanto para clasificación como para regresión.
 from sklearn import tree
+#Esta función se utiliza para gestionar configuraciones de aplicaciones, como credenciales de API, mediante archivos de entorno (.env). Permite cargar variables de entorno de manera segura y flexible.
 from decouple import config
 
 
